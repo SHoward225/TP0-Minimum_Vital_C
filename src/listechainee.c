@@ -30,9 +30,14 @@ struct elem {
 /* Affiche les éléments de la liste passée en paramètre sur la sortie
  * standard. */
 void affichage_liste(struct elem const *const liste) {
-  /**
-     Votre code est à mettre ici !
-  */
+  const struct elem *current=liste; // Parcourir la liste et afficher chaque élément
+
+  while (current != NULL){
+    printf("%lu -> ", current->val); //Affiche la valeur de l'élément
+    current = current->next; // Passer à l'élément suivant
+  }
+
+  printf("NULL\n"); //Fin de la liste
   (void)liste; // to remove
 }
 
