@@ -38,7 +38,24 @@ void affichage_liste(struct elem const *const liste) {
   }
 
   printf("NULL\n"); //Fin de la liste
-  (void)liste; // to remove
+
+}
+
+/** /*================ Libère toute la mémoire associée à la liste passée en paramètre.  ================
+
+   @param liste head list, pointer on first element, not NULL
+*/
+
+void destruction_liste(struct elem liste[static 1]) {
+
+  struct elem *current = liste;   //Pointeur pour parcourir la liste
+  struct elem *next_elem;         //Pointeur pour stocker l'élément suivant
+
+  while (current != NULL) {
+    next_elem = current->next;               // Sauvegarde l'élément suivant
+    free(current);                           // Libère l'élément actuel
+    current = next_elem;                     // Passe à l'élément suivant
+  }
 }
 
 /*================ Crée une liste simplement chainée à partir des nb_elems éléments du tableau valeurs.  ======================*/
@@ -75,29 +92,8 @@ struct elem *creation_liste(size_t nb_elems, long unsigned int const valeurs[nb_
     current = new_elem;          // Avancer au nouvel élément
   }
 
-
-  (void)nb_elems; // to remove
-  (void)valeurs;  // to remove
   return head;  // Retourner la tête de la liste
-}
 
-/** /*================ Libère toute la mémoire associée à la liste passée en paramètre.  ================
-
-   @param liste head list, pointer on first element, not NULL
-*/
-
-void destruction_liste(struct elem liste[static 1]) {
-
-  struct elem *current = liste;   //Pointeur pour parcourir la liste
-  struct elem *next_elem;         //Pointeur pour stocker l'élément suivant
-
-  while (current != NULL) {
-    next_elem = current->next;               // Sauvegarde l'élément suivant
-    free(current);                           // Libère l'élément actuel
-    current = next_elem;                     // Passe à l'élément suivant
-  }
-  
-  (void)liste; // to remove
 }
 
 /**================================================================================================================
@@ -121,11 +117,23 @@ void inversion_liste(struct elem *liste[static 1]) {
   }
 
   *liste = prev;  // Mise à jour de la tête de liste (qui devient le dernier élément)
-  (void)liste; // to remove
+
 }
+
+
+/* ============================= Fonction de verification d'inversion ================================ */
+
+void debug_inversion(struct elem *h1, struct elem *h2) {
+    printf("head1= %p, head2= %p\n", h1, h2);  // Affiche les adresses des têtes de liste
+    affichage_liste(h1);  // Affiche la première liste
+    affichage_liste(h2);  // Affiche la deuxième liste
+}
+
 
 const long unsigned int TAILLE = 100;
 const long unsigned int TAILLE_GRANDE = 1000000;
+
+
 
 int main(void) {
   /* Test d'affichage d'une liste créée à la main. */
@@ -183,6 +191,9 @@ int main(void) {
   tab_elem = creation_liste(TAILLE, valeurs_nombreuses);
   assert(tab_elem != NULL);
   destruction_liste(tab_elem);
+
+  // Libérer la mémoire allouée pour le tableau valeurs_nombreuses
+  free(valeurs_nombreuses);
   
   return EXIT_SUCCESS;
 }
