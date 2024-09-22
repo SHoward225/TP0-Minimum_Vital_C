@@ -27,8 +27,8 @@ struct elem {
   struct elem *next;
 };
 
-/* Affiche les éléments de la liste passée en paramètre sur la sortie
- * standard. */
+/* ================ Affiche les éléments de la liste passée en paramètre sur la sortie standard.================*/
+
 void affichage_liste(struct elem const *const liste) {
   const struct elem *current=liste; // Parcourir la liste et afficher chaque élément
 
@@ -41,23 +41,51 @@ void affichage_liste(struct elem const *const liste) {
   (void)liste; // to remove
 }
 
-/* Crée une liste simplement chainée à partir des nb_elems éléments du
- * tableau valeurs. */
-struct elem *creation_liste(size_t nb_elems,
-                            long unsigned int const valeurs[nb_elems]) {
-  /**
-     Votre code est à mettre ici !
-  */
+/*================ Crée une liste simplement chainée à partir des nb_elems éléments du tableau valeurs.  ======================*/
+struct elem *creation_liste(size_t nb_elems, long unsigned int const valeurs[nb_elems]) {
+  
+  if(nb_elems ==0){
+    return NULL; // Si aucun élément, retourne NULL
+  }
+
+  // Allouer la tête de la liste
+  struct elem *head = malloc(sizeof(struct elem));
+  if (!head){
+    return NULL; // Vérifier si l'allocation a réussi
+  }
+
+  head->val = valeurs[0];
+  head->next = NULL;
+
+  // Pointeur pour construire la liste
+  struct elem *current = head;
+  
+  // Boucle pour ajouter les autres élements
+  for (size_t i=1; i<nb_elems; i++){
+    struct elem *new_elem = malloc(sizeof(struct elem));
+    if (!new_elem) {
+      // Si l'allocation échoue, libérer la mémoire déjà allouée
+      destruction_liste(head);
+      return NULL;
+    }
+    new_elem->val = valeurs[i];  // Assigner la valeur
+    new_elem->next = NULL;       // Initialiser à NULL
+    
+    current->next = new_elem;    // Relier l'élément précédent au nouveau
+    current = new_elem;          // Avancer au nouvel élément
+  }
+
+
   (void)nb_elems; // to remove
   (void)valeurs;  // to remove
-  return NULL;
+  return head;  // Retourner la tête de la liste
 }
 
-/**
-   Libère toute la mémoire associée à la liste passée en paramètre.
+/** /*================ Libère toute la mémoire associée à la liste passée en paramètre.  ================
 
    @param liste head list, pointer on first element, not NULL
 */
+
 void destruction_liste(struct elem liste[static 1]) {
   /**
      Votre code est à mettre ici !
