@@ -87,22 +87,40 @@ struct elem *creation_liste(size_t nb_elems, long unsigned int const valeurs[nb_
 */
 
 void destruction_liste(struct elem liste[static 1]) {
-  /**
-     Votre code est à mettre ici !
-  */
+
+  struct elem *current = liste;   //Pointeur pour parcourir la liste
+  struct elem *next_elem;         //Pointeur pour stocker l'élément suivant
+
+  while (current != NULL) {
+    next_elem = current->next;               // Sauvegarde l'élément suivant
+    free(current);                           // Libère l'élément actuel
+    current = next_elem;                     // Passe à l'élément suivant
+  }
+  
   (void)liste; // to remove
 }
 
-/**
+/**================================================================================================================
  * Inverse la liste simplement chainée passée en paramètre. Le
  * paramètre liste contient l'adresse du pointeur sur la tête de liste
  * à inverser.
  * @param liste head list address, not NULL
+ * ================================================================================================================
  */
 void inversion_liste(struct elem *liste[static 1]) {
-  /**
-     Votre code est à mettre ici !
-  */
+
+  struct elem *prev = NULL;      // Pointeur vers l'élément précédent (au début NULL)
+  struct elem *current = *liste; // Pointeur vers l'élément courant (initialisé à la tête)
+  struct elem *next = NULL;      // Pointeur vers l'élément suivant
+  
+  while (current != NULL){
+    next = current->next;   // Sauvegarder l'élément suivant
+    current->next = prev;   // Inverser le lien : l'élément courant pointe vers le précédent
+    prev = current;         // Avancer le pointeur prev à l'élément courant
+    current = next;         // Avancer current à l'élément suivant
+  }
+
+  *liste = prev;  // Mise à jour de la tête de liste (qui devient le dernier élément)
   (void)liste; // to remove
 }
 
