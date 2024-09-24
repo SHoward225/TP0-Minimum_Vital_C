@@ -134,7 +134,6 @@ const long unsigned int TAILLE = 100;
 const long unsigned int TAILLE_GRANDE = 1000000;
 
 
-
 int main(void) {
   /* Test d'affichage d'une liste créée à la main. */
   struct elem e1, e2, e3;
